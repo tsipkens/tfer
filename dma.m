@@ -40,11 +40,24 @@ if ~isfield(opts,'diffu'); opts.diffusion = 1; end
 if isempty(prop); prop = kernel.prop_dma(opts); end
 %-------------------------------------------------------------------------%
 
+% Loop through charge states and evaluate transfer function.
+Omega = zeros(length(d_star), length(d), length(z));
+Zp_tilde = zeros(length(d), length(d_star), length(z));
+for ii=1:length(z)
+    [Omega(:,:,ii), Zp_tilde(:,:,ii)] = tfer_dma0(d_star, d, z(ii), prop, opts);
+end
+
+end
+
+
+%=========================================================================%
+% TFER_DMA0  Evalutes transfer function for a single charge state.
+% Loop through charge states in previous function.
+function [Omega, Zp_tilde] = tfer_dma0(d_star, d, z, prop, opts)
 
 %-- Physical constants ---------------------------------------------------%
 kb = 1.38064852e-23; % Boltzmann constant [m^2 kg s^-2 K^-1]
 e = 1.6022E-19; % electron charge [C]
-
 
 %-- Evaluate particle mobility -------------------------------------------%
 if strcmp(opts.solver,'Buckley')
