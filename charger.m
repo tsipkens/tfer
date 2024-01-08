@@ -1,5 +1,5 @@
 
-% CHARGE  Calculates the fraction of particles with a specific integer charge.
+% CHARGER  Calculates the fraction of particles with a specific integer charge.
 %  Based on code from Buckley et al., J. Aerosol Sci. (2008) and Olfert
 %  laboratory at the University of Alberta.
 % 
@@ -13,7 +13,7 @@
 %  
 %  AUTHOR: Timothy Sipkens, 2018-12-27
 
-function [fn, qbar, model] = charge(d, z, T, model, opt)
+function [fn, qbar, model] = charger(d, z, T, model, opt)
 
 %-- Parse inputs ---------------------------------------------------------%
 if ~exist('T','var')
