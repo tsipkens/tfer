@@ -1,5 +1,5 @@
 
-% GEN_ELPI Compute kernel/transfer function for ELPI+.
+% ELPI Compute kernel/transfer function for ELPI+.
 %  Uses the fits from Järvinen et al. (2014).
 %  
 %  K = kernel.gen_elpi(DA) computes the kernel, K, for the aerodynamic
@@ -7,7 +7,7 @@
 %  
 %  AUTHOR: Timothy Sipkens, 2021-04-05
 
-function [K, d50] = gen_elpi(da)
+function [K, d50] = elpi(da)
 
 % Values from Järvinen et al. (2014).
 d50 = [15.7, 30.4, 54.1, 94.3, 154., ...
