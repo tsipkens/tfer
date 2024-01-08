@@ -1,5 +1,5 @@
 
-% TFER_CHARGE  sCalculates the fraction of particles with a specific integer charge.
+% CHARGE  Calculates the fraction of particles with a specific integer charge.
 %  Based on code from Buckley et al., J. Aerosol Sci. (2008) and Olfert
 %  laboratory at the University of Alberta.
 % 
@@ -13,7 +13,7 @@
 %  
 %  AUTHOR: Timothy Sipkens, 2018-12-27
 
-function [fn, qbar] = tfer_charge(d, z, T, model, opt)
+function [fn, qbar, model] = charge(d, z, T, model, opt)
 
 %-- Parse inputs ---------------------------------------------------------%
 if ~exist('T','var')
@@ -93,7 +93,7 @@ end
 if any(model == 'g')
     indg = (model == 'g')';
     if any(z<3)
-        ind = and(indg, z < 3);
+        ind = and(indg, abs(z) < 3);
         
         if ~isfield(opt, 'conduction'); cond = 1;
         else; cond = opt.conduction; end
@@ -102,7 +102,7 @@ if any(model == 'g')
         exponent = zeros(length(d),sum(ind));
         for ii = 1:4
             exponent = exponent + ...
-                a(ii,z(ind)+1) .* log(d.*1e9) .^ (ii-1);
+                a(ii,z(ind)+3) .* log(d.*1e9) .^ (ii-1);
         end
         fn(:,ind) = exp(exponent);
     end
@@ -128,7 +128,7 @@ if any(model == 'f')
     % Main loop over diameters.
     qbar = zeros(length(d), 1);  % initialize
     for ii=1:length(d)
-        [p0, pz, qbar(ii)] = kernel.fuchs(d(ii), max(80,round(max(z) .* 1.2)), T, 1, nit, eps);
+        [p0, pz, qbar(ii)] = fun_fuchs(d(ii), max(80,round(max(z) .* 1.2)), T, 1, nit, eps);
         if z(1)~=0  % account for if z = 0 is present
             fn(ii,:) = pz(z);
         else
@@ -159,7 +159,7 @@ if any(model == 'l')
 
     % Unpack stored collision kernels.
     colls = [];
-    in = load('+working/li_v4_collkernel.mat');
+    in = load('li_v4_collkernel.mat');
     for ii=1:length(in.dvec)
         if size(colls, 2) ~= length(in.collkernel0{ii})
             colls = [colls, zeros(size(colls, 1), ...
@@ -183,7 +183,7 @@ if any(model == 'l')
             (log(in.dvec(idx)) - log(in.dvec(idx - 1))) + ...
             log(colls(idx - 1,:)));
         
-        [qbar(ii), pz] = kernel.collkernel2charge(coll, nit);
+        [qbar(ii), pz] = fun_collkernel2charge(coll, nit);
         
         z_int = intersect(0:size(colls, 2) - 1, z);
         z_xor = setxor(0:size(colls, 2) - 1, z);
@@ -206,16 +206,16 @@ end
 function [a] = get_a(cond) % coefficients from Gopalakrishnan et al.
 
 if cond == 1 % conducting values
-    a = [-0.3880,-8.0157,-40.714;...
-        0.4545,3.2536,17.487;...
-        -0.1634,-0.5018,-2.6146;...
-        0.0091,0.0223,0.1282];
+    a = [-45.405, -7.8696, -0.3880, -8.0157, -40.714;...
+          20.049,  3.1036,  0.4545,  3.2536,  17.487;...
+         -3.0570, -0.4557, -0.1634, -0.5018,  -2.6146;...
+          0.1534,  0.0187,  0.0091,  0.0223,   0.1282];
 
 else % non-conducting values
-    a = [-1.212,-16.704,-71.051;...
-        1.1068,7.5438,31.209;...
-        -0.2934,-1.1938,-4.6696;...
-        0.0169,0.0589,0.2301];
+    a = [-63.185, -16.801,  -1.212,  -16.704,  -71.051;...
+          26.833,   7.5947,  1.1068,   7.5438,  31.209;...
+          -3.8723, -1.1975, -0.2934,  -1.1938,  -4.6696;...
+           0.1835,  0.0590,  0.0169,   0.0589,   0.2301];
 end
 
 end
