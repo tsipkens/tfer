@@ -9,10 +9,10 @@
 %  
 %  AUTHOR: Timothy Sipkens, 2019-06-26
 
-function [prop] = prop_pma(opts)
+function [prop] = prop_pma(spec)
 
-if ~exist('opts','var'); opts = []; end
-if isempty(opts); opts = 'olfert'; end
+if ~exist('spec','var'); spec = []; end
+if isempty(spec); spec = 'olfert'; end
 
 
 prop.rho0 = pi*1000/6; % ~524;
@@ -22,7 +22,7 @@ prop.Dm = 3;
 % prop.rho0 = 0.0612;
 % prop.Dm = 2.48;
 
-switch opts
+switch spec
     
     %-- CPMA parameters from Olfert lab ----------------------------------%
     case {'olfert','cpma',' CPMA'} % final entry associated with data import
