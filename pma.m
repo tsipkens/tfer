@@ -5,7 +5,9 @@
 
 function [Lambda_ii, prop, f_z, qbar] = pma(sp, m, d, z, prop, opt)
 
-addpath tfer_pma; % add mat-tfer-pma package to MATLAB path
+% Add mat-tfer-pma package to MATLAB path.
+fd = fileparts(mfilename('fullpath'));
+addpath([fd, filesep, 'tfer_pma']);
 
 
 %-- Parse inputs ---------------------------------------------------------%
