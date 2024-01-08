@@ -15,11 +15,8 @@ if ~exist('spec','var'); spec = []; end
 if isempty(spec); spec = 'cpma'; end
 if strcmp(spec,'olfert'); spec = 'cpma'; end  % for backward compatibility
 
-% Check if code is in +tfer package.
-if isfile('+tfer/load_spec.m'); load = @tfer.load_spec;
-else; load = @load_spec; end
-
-prop = load(spec);  % load from config file
+% Load from config file.
+prop = load_spec(spec);
 
 % --If Dm not set, assign one now ----------------------------------------%
 if ~isfield(prop, 'Dm')
