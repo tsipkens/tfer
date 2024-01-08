@@ -3,7 +3,6 @@
 autils/
 cmap/
 archive/
-+scripts/
 config_local/
 
 # Matlab ignore
