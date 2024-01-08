@@ -1,6 +1,16 @@
 
 % LOAD_SPEC  Checks if a configuration files exists for given spec and loads.
 %  
+%  Checks for a YAML file matching spec in the following three locations in
+%  order: (1) the local_config folder, (2) a local_config folder in the
+%  parent directory (useful when loaded as a submodule), and (3) the
+%  default config files provided in the config folder in the repo. 
+%  
+%  Note config files may have to be combined with prop_* functions to
+%  calculated additional properties for specific aerosol instruments. 
+%  
+%  ------------------------------------------------------------------------
+%  
 %  AUTHOR: Timothy Sipkens, 2024-01-08
 
 function prop = load_spec(spec)
@@ -12,9 +22,14 @@ fd = fileparts(mfilename('fullpath'));
 % Get corresponding file name for configuration file.
 fn = [fd, filesep, 'config', filesep, spec, '.yaml'];  % file name of potential config
 fnl = [fd, filesep, 'config_local', filesep, spec, '.yaml'];  % allow for local config
+fnp = [fd, filesep, '../config_local', filesep, spec, '.yaml'];  % also check parent directory
 
 if isfile(fnl)  %try local load first
     prop = read_yaml(fnl);
+
+elseif isfile(fnp)
+    prop = read_yaml(fnp);
+
 elseif isfile(fn)
     prop = read_yaml(fn);
 

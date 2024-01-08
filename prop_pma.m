@@ -13,66 +13,10 @@ function [prop] = prop_pma(spec)
 
 if ~exist('spec','var'); spec = []; end
 if isempty(spec); spec = 'cpma'; end
+if strcmp(spec,'olfert'); spec = 'cpma'; end  % for backward compatibility
 
-
-% Check if load configuration file.
+% Load from config file.
 prop = load_spec(spec);
-
-if ~isstruct(prop)  % otherwise load hard coded examples
-    switch spec
-        
-        %-- CPMA parameters from Olfert lab ----------------------------------%
-        case {'olfert','default',' CPMA'}
-            prop = load_spec('cpma');
-    
-        %-- CPMA/APM parameters from Buckley et al. --------------------------%
-        case 'buckley'
-            prop.r2 = 0.025; % outer electrode radius [m]
-            prop.r1 = 0.024; % inner electrode radius [m]
-            prop.L = 0.1;    % length of APM [m]
-            prop.omega = 13350*2*pi/60; % rotational speed [rad/s] (from RPM)
-            prop.omega_hat = 1; % APM, so rotational speed is the same
-            prop.Q = 1.02e-3/60; % aerosol flowrate [m^3/s]
-            prop.T = 298; % system temperature [K]
-            prop.p = 1; % system pressure [atm]
-        
-        %-- CPMA parameters from Olfert lab ----------------------------------%
-        case {'flarenet18','fn18'}
-            prop.r1 = 0.06; % inner electrode radius [m]
-            prop.r2 = 0.061; % outer electrode radius [m]
-            prop.L = 0.2; % length of chamber [m]
-            prop.p = 1; % pressure [atm]
-            prop.T = 293; % system temperature [K]
-            prop.Q = 0.3/1000/60; % volume flow rate (m^3/s) (prev: ~1 lpm)
-            prop.omega_hat = 32/33; % ratio of angular speed
-            prop.rho0 = pi*1000/6; % ~524;
-            prop.Dm = 3;
-            
-        case {'soot-salt'}
-            prop.r1 = 0.06; % inner electrode radius [m]
-            prop.r2 = 0.061; % outer electrode radius [m]
-            prop.L = 0.2; % length of chamber [m]
-            prop.p = 1; % pressure [atm]
-            prop.T = 293; % system temperature [K]
-            prop.Q = 0.3/1000/60; % volume flow rate (m^3/s) (prev: ~1 lpm)
-            prop.omega_hat = 32/33; % ratio of angular speed
-            prop.rho0 = 0.0612; % ~524;
-            prop.Dm = 2.48;
-            
-	    case 'santavac'
-            prop.r1 = 0.06; % inner electrode radius [m]
-            prop.r2 = 0.061; % outer electrode radius [m]
-            prop.L = 0.2; % length of chamber [m]
-            prop.p = 1; % pressure [atm]
-            prop.T = 293; % system temperature [K]
-            prop.Q = 0.3/1000/60; % volume flow rate (m^3/s) (prev: ~1 lpm)
-            prop.omega_hat = 32/33; % ratio of angular speed
-            prop.rho0 = pi*1000/6;
-            prop.Dm = 3;
-    
-    end
-end
-
 
 % --If Dm not set, assign one now ----------------------------------------%
 if ~isfield(prop, 'Dm')
