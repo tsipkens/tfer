@@ -159,7 +159,8 @@ if any(model == 'l')
 
     % Unpack stored collision kernels.
     colls = [];
-    in = load('li_v4_collkernel.mat');
+    fd = fileparts(mfilename('fullpath'));
+    in = load([fd, filesep, 'li_v4_collkernel.mat']);
     for ii=1:length(in.dvec)
         if size(colls, 2) ~= length(in.collkernel0{ii})
             colls = [colls, zeros(size(colls, 1), ...

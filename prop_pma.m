@@ -16,14 +16,14 @@ if isempty(spec); spec = 'cpma'; end
 
 
 % Check if load configuration file.
-prop = check_spec(spec);
+prop = load_spec(spec);
 
 if ~isstruct(prop)  % otherwise load hard coded examples
     switch spec
         
         %-- CPMA parameters from Olfert lab ----------------------------------%
         case {'olfert','default',' CPMA'}
-            prop = check_spec('cpma');
+            prop = load_spec('cpma');
     
         %-- CPMA/APM parameters from Buckley et al. --------------------------%
         case 'buckley'
@@ -58,11 +58,6 @@ if ~isstruct(prop)  % otherwise load hard coded examples
             prop.omega_hat = 32/33; % ratio of angular speed
             prop.rho0 = 0.0612; % ~524;
             prop.Dm = 2.48;
-        
-        %-- Parameters from Olfert and Collings -------------%
-        %   Nearly identical to the Ehara et al. case
-        case 'olfert-collings'
-            prop = check_spec('olfertcollings');
             
 	    case 'santavac'
             prop.r1 = 0.06; % inner electrode radius [m]
