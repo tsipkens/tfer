@@ -1,0 +1,10 @@
+
+# Custom folders
+autils/
+tfer_pma/
+cmap/
+archive/
++scripts/
+
+# Matlab ignore
+*.asv
