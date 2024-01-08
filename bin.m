@@ -1,5 +1,5 @@
 
-% GEN_1D_BIN  Evaluate equivalent kernel/transfer functions for uniformly binned data.
+% BIN  Evaluate equivalent kernel/transfer functions for uniformly binned data.
 % Author:  Timothy Sipkens, 2020-04-21
 % 
 % Inputs:
@@ -9,7 +9,7 @@
 % Outputs:
 %   A           Kernel matrix
 
-function A = gen_bin(vec_b,vec_x)
+function A = bin(vec_b, vec_x)
 
 
 %-- Start evaluate kernel ------------------------------------------------%
