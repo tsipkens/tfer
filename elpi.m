@@ -12,6 +12,8 @@ function [K, d50] = elpi(da, prop)
 if ~exist('prop', 'var'); prop = []; end
 if isempty(prop); prop = prop_elpi(); end
 
+d50 = prop.d50;
+
 % If data is transposed from expected.
 if size(da, 2) == 1; da = da'; end
 
