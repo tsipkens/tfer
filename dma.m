@@ -47,6 +47,7 @@ for ii=1:length(z)
     [Omega(:,:,ii), Zp_tilde(:,:,ii)] = tfer_dma0(d_star, d, z(ii), prop, opts);
 end
 
+
 end
 
 
@@ -121,6 +122,9 @@ Omega = smallTransform.*Omega;
 
 
 Omega = Omega'; % transpose data to output desired format
+
+% Remove numerical noise in kernel.
+Omega(Omega<(1e-7.*max(max(Omega)))) = 0;
 
 end
 
