@@ -22,14 +22,8 @@ if ~isstruct(prop)  % otherwise load hard coded examples
     switch spec
         
         %-- CPMA parameters from Olfert lab ----------------------------------%
-        case {'olfert','cpma',' CPMA'} % final entry associated with data import
-            prop.r1 = 0.06; % inner electrode radius [m]
-            prop.r2 = 0.061; % outer electrode radius [m]
-            prop.L = 0.2; % length of chamber [m]
-            prop.p = 1; % pressure [atm]
-            prop.T = 293; % system temperature [K]
-            prop.Q = 3/1000/60;%0.3/1000/60;%1.5/1000/60; % volume flow rate (m^3/s) (prev: ~1 lpm)
-            prop.omega_hat = 32/33; % ratio of angular speeds
+        case {'olfert',' CPMA'} % final entry associated with data import
+            prop = check_spec('cpma');
     
         %-- CPMA/APM parameters from Buckley et al. --------------------------%
         case 'buckley'
