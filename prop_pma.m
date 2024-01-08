@@ -105,8 +105,10 @@ prop.D = @(B) kB.*prop.T.*B; % diffusion coefficient
 
 
 % Fill mass-mobility relation equivalents.
-addpath tfer_pma;
-prop = prop_massmob(prop);
+% First, add mat-tfer-pma package to MATLAB path.
+fd = fileparts(mfilename('fullpath'));
+addpath([fd, filesep, 'tfer-pma']);
+prop = prop_massmob(prop);  % mass-mobility relationship
 
 end
 
