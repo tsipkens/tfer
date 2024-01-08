@@ -1,14 +1,13 @@
 
-% PMA  Bridging function used to evaluate particle mass analyer (PMA) transfer function.
+% TFER_PMA  Bridging function used to evaluate particle mass analyer (PMA) transfer function.
+%
 %  AUTHOR: Timothy Sipkens, 2024-01-05
 
-
-function [Lambda_ii, prop, f_z, qbar] = pma(sp, m, d, z, prop, opt)
+function [Lambda_ii, prop, f_z, qbar] = tfer_pma(sp, m, d, z, prop, opt)
 
 % Add mat-tfer-pma package to MATLAB path.
 fd = fileparts(mfilename('fullpath'));
 addpath([fd, filesep, 'tfer-pma']);
-
 
 %-- Parse inputs ---------------------------------------------------------%
 if ~exist('opt','var'); opt = []; end
@@ -20,7 +19,7 @@ if isempty(opt); opt = '1C'; end
 % If not given, import default properties of PMA, 
 % as selected by prop_pma function.
 if ~exist('prop','var'); prop = []; end
-if isempty(prop); prop = kernel.prop_pma; end
+if isempty(prop); prop = prop_pma; end
 
 if ~exist('z','var'); z = []; end
 if isempty(z); z = (1:4)'; end

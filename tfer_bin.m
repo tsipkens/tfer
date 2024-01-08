@@ -1,5 +1,5 @@
 
-% BIN  Evaluate equivalent kernel/transfer functions for uniformly binned data.
+% TFER_BIN  Evaluate equivalent kernel/transfer functions for uniformly binned data.
 % Author:  Timothy Sipkens, 2020-04-21
 % 
 % Inputs:
@@ -9,7 +9,7 @@
 % Outputs:
 %   A           Kernel matrix
 
-function A = bin(vec_b, vec_x)
+function A = tfer_bin(vec_b, vec_x)
 
 %-- Start evaluate kernel ------------------------------------------------%
 % Number of bins and evaluation points. 

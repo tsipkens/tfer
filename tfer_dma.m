@@ -1,5 +1,5 @@
 
-% DMA  Evaluates the transfer function of a differential mobility analyzer.
+% TFER_DMA  Evaluates the transfer function of a differential mobility analyzer.
 % 
 %  OMEGA = kernel.tfer_dma(D_STAR,D,Z) uses the mobility diameter set points
 %  specified by D_STAR [m] and evalautes the DMA transfer function at D
@@ -26,7 +26,7 @@
 %  AUTHOR: Timothy Sipkens, 2018-12-27
 %  ADAPTED FROM: Buckley et al. (2017) and Olfert group
 
-function [Omega, Zp_tilde] = dma(d_star, d, z, prop, opts)
+function [Omega, Zp_tilde] = tfer_dma(d_star, d, z, prop, opts)
 
 
 %-- Parse inputs ---------------------------------------------------------%
@@ -37,7 +37,7 @@ if ~exist('prop','var'); prop = []; end
 
 if ~isfield(opts,'solver'); opts.solver = 'fullydeveloped'; end
 if ~isfield(opts,'diffu'); opts.diffusion = 1; end
-if isempty(prop); prop = kernel.prop_dma(opts); end
+if isempty(prop); prop = prop_dma(opts); end
 %-------------------------------------------------------------------------%
 
 % Loop through charge states and evaluate transfer function.

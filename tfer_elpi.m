@@ -1,5 +1,5 @@
 
-% ELPI Compute kernel/transfer function for ELPI+.
+% TFER_ELPI Compute kernel/transfer function for ELPI+.
 %  Uses the fits from Järvinen et al. (2014).
 %  
 %  K = elpi(DA) computes the kernel, K, for the aerodynamic
@@ -7,7 +7,7 @@
 %  
 %  AUTHOR: Timothy Sipkens, 2021-04-05
 
-function [K, d50] = elpi(da, prop)
+function [K, d50] = tfer_elpi(da, prop)
 
 if ~exist('prop', 'var'); prop = []; end
 if isempty(prop); prop = prop_elpi(); end
