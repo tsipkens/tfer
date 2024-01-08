@@ -128,7 +128,11 @@ if any(model == 'f')
     % Main loop over diameters.
     qbar = zeros(length(d), 1);  % initialize
     for ii=1:length(d)
-        [p0, pz, qbar(ii)] = fun_fuchs(d(ii), max(80,round(max(z) .* 1.2)), T, 1, nit, eps);
+        % Check if code is in +tfer package.
+        if isfile('+tfer/fun_fuchs.m'); fun = @tfer.fun_fuchs;
+        else; fun = @fun_fuchs; end
+        
+        [p0, pz, qbar(ii)] = fun(d(ii), max(80,round(max(z) .* 1.2)), T, 1, nit, eps);
         if z(1)~=0  % account for if z = 0 is present
             fn(ii,:) = pz(z);
         else
@@ -184,11 +188,15 @@ if any(model == 'l')
             (log(in.dvec(idx)) - log(in.dvec(idx - 1))) + ...
             log(colls(idx - 1,:)));
         
-        [qbar(ii), pz] = fun_collkernel2charge(coll, nit);
+        % Check if code is in +tfer package.
+        if isfile('+tfer/fun_collkernel2charge.m'); fun = @tfer.fun_collkernel2charge;
+        else; fun = @fun_collkernel2charge; end
+        
+        [qbar(ii), pz] = fun(coll, nit);
         
         z_int = intersect(0:size(colls, 2) - 1, z);
         z_xor = setxor(0:size(colls, 2) - 1, z);
-
+        
         fn(ii, z_int + 1) = pz;
         fn(ii, z_xor + 1) = 0;  % or NaN
         
