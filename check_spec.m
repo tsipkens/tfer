@@ -7,6 +7,7 @@ function prop = check_spec(spec)
 
 % Get folder where this script is located. 
 % Allows for running this script when added as a submodule.
+pause(0.1);  % to ensure Matlab is in folder below
 fd = fileparts(matlab.desktop.editor.getActiveFilename);
 
 % Get corresponding file name for configuration file.
