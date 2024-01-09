@@ -59,7 +59,7 @@ title('PMA');
 d_star = logspace(log10(13.1), log10(500), 10)';  % mobility setpoints
 
 z3 = -6:6;
-[Ac3, ~, model] = charge(d_star .* 1e-9, z3);  % unipolar/Fuchs
+[Ac3, ~, model] = charger(d_star .* 1e-9, z3);  % unipolar/Fuchs
 
 %-{
 f3 = figure(3);
@@ -78,7 +78,7 @@ title('Charge distributions');
 opts.eps = 13.5;
 opts.nit = 4e13;
 z4 = 0:100;
-Ac4 = charge(d_star .* 1e-9, z4, [], 'fuchs', opts);  % unipolar/Fuchs
+Ac4 = charger(d_star .* 1e-9, z4, [], 'fuchs', opts);  % unipolar/Fuchs
 
 %-{
 subplot(5, 1, 2);
@@ -89,7 +89,7 @@ xlabel(['Fuchs, nit = ', num2str(opts.nit/1e12), 'x10^{12}']);
 opts.eps = 13.5;
 opts.nit = 5e11;
 z4 = 0:100;
-Ac4 = charge(d_star .* 1e-9, z4, [], 'fuchs', opts);  % unipolar/Fuchs
+Ac4 = charger(d_star .* 1e-9, z4, [], 'fuchs', opts);  % unipolar/Fuchs
 
 subplot(5, 1, 4);
 cmap_sweep(length(d_star), cm);
@@ -101,7 +101,7 @@ xlabel(['Fuchs, nit = ', num2str(opts.nit/1e12), 'x0^{12}']);
 opts.eps = 13.5;
 opts.nit = 4e13;
 z5 = 0:300;  % Li model currently requires contiguous charges starting at zero and must exceed 127
-Ac5 = charge(d_star .* 1e-9, z5, [], 'li', opts);  % unipolar/Fuchs
+Ac5 = charger(d_star .* 1e-9, z5, [], 'li', opts);  % unipolar/Fuchs
 
 %-{
 subplot(5, 1, 3);
@@ -114,7 +114,7 @@ xlabel(['Li, nit = ', num2str(opts.nit/1e12), 'x10^{12}']);
 opts.eps = 13.5;
 opts.nit = 5e11;
 z5 = 0:300;  % Li model currently requires contiguous charges starting at zero and must exceed 127
-Ac5 = charge(d_star .* 1e-9, z5, [], 'li', opts);  % unipolar/Fuchs
+Ac5 = charger(d_star .* 1e-9, z5, [], 'li', opts);  % unipolar/Fuchs
 
 subplot(5, 1, 5);
 cmap_sweep(length(d_star), cm);
