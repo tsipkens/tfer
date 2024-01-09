@@ -97,7 +97,7 @@ plot(d_mid, p_fuchs, 'k');
 hold on;
 plot(d_mid, p_white, 'm');
 plot(d_mid, nu .* ones(size(d_mid)), 'r');
-plot(d_mid_ranga, p_ranga, 'g-');
+plot(d_mid_ranga, p_ranga, 'c-');
 hold off;
 set(gca, 'XScale', 'log');
 xlim([d(1), d(end)]);

@@ -61,7 +61,7 @@ kb = 1.38064852e-23; % Boltzmann constant [m^2 kg s^-2 K^-1]
 e = 1.6022E-19; % electron charge [C]
 
 %-- Evaluate particle mobility -------------------------------------------%
-if strcmp(opts.solver,'Buckley')
+if strcmp(opts.solver, 'buckley')
     [B, Zp] = dm2zp(d, z);  % evaluate electrical mobility (Davies)
     [~, Zp_star] = dm2zp(d_star);
 else
