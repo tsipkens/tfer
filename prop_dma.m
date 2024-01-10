@@ -52,8 +52,10 @@ switch opts.params
 end
 
 
-prop.bet = (prop.Q_s+prop.Q_a)/(prop.Q_c+prop.Q_m);
-prop.del = (prop.Q_s-prop.Q_a)/(prop.Q_s+prop.Q_a);
+prop.bet = (prop.Q_s + prop.Q_a)  /(prop.Q_c + prop.Q_m);
+prop.del = (prop.Q_s - prop.Q_a) / (prop.Q_s + prop.Q_a);
+
+prop.Rd = 1 / prop.bet;  % compute optical resolution
 
 gam = (prop.R1/prop.R2)^2;
 kap = prop.L/prop.R2; % Stolzenburg Manuscript Eqn 9
