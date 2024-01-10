@@ -28,7 +28,7 @@ f1 = figure(1);
 cmap_sweep(length(d_star), cm);
 semilogx(d, Adma(:,:,2));
 hold on;
-semilogx(d, Admat, '--');
+semilogx(d, Admat, '--k');
 hold off;
 xlim([d(1), d(end)]); xlabel('d_m [nm]');
 f1.Position(3) = 1000;
@@ -65,7 +65,7 @@ Aft = tfer_tri(sp, m .* 1e-18, prop.zet, z);
 
 %-{
 hold on;
-semilogx(m, Aft(:,:,idx), '--');
+semilogx(m, Aft(:,:,idx), 'k--');
 hold off;
 %}
 
@@ -174,3 +174,34 @@ f5.Position(2) = 400;
 f5.Position(3) = 1000;
 title('Impactor');
 %}
+
+
+%%
+%== AAC ==================================================================%
+da = logspace(0.5, 3.5, 700)';  % reconstruction vector
+da_star = logspace(1, 3, 20);
+prop = prop_aac();
+
+Aa = tfer_aac(da_star .* 1e-9, da .* 1e-9, prop);
+
+% Scanning version.
+opts = struct();
+opts.scan = 1;
+prop.tsc = 4;
+prop.omega_s = 1500;
+prop.omega_e = 50;
+Aas = tfer_aac(da_star .* 1e-9, da .* 1e-9, prop, opts);  % uses default elpi properties
+
+%-{
+f6 = figure(6);
+cmap_sweep(size(Aa, 1), cm);
+semilogx(da, Aa);
+hold on;
+semilogx(da, Aas, 'k--');
+hold off;
+xlim([da(1), da(end)]); xlabel('d_a [nm]');
+f6.Position(2) = 400;
+f6.Position(3) = 1000;
+title('AAC');
+%}
+
