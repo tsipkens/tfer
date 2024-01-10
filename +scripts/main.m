@@ -12,18 +12,24 @@ cm = turbo;
 
 %%
 %== DMA ==================================================================%
-d = logspace(log10(10), log10(300), 500)';  % reconstruction points
-d_star = logspace(log10(13.1), log10(200), 50)';  % mobility setpoints
+d = logspace(log10(10), log10(800), 500)';  % reconstruction points
+d_star = logspace(log10(13.1), log10(600), 20)';  % mobility setpoints
 z = 0:4;
 
 prop = prop_dma  % default DMA properties
 
 Adma = tfer_dma(d_star' .* 1e-9, d .* 1e-9, z, prop);
 
+% Triangular version of the transfer function.
+Admat = tfer_tri(d_star', d, prop.Rd);
+
 %-{
 f1 = figure(1);
 cmap_sweep(length(d_star), cm);
 semilogx(d, Adma(:,:,2));
+hold on;
+semilogx(d, Admat, '--');
+hold off;
 xlim([d(1), d(end)]); xlabel('d_m [nm]');
 f1.Position(3) = 1000;
 title('DMA');
@@ -34,25 +40,34 @@ title('DMA');
 %== PMA ==================================================================%
 %   Currently assumes a one-to-one map m > dm. 
 m = logspace(-3, 2, 500)';  % reconstruction points
-m_star = logspace(-2.5, 1.5, 40)';  % mass-to-charge setpoints
+m_star = logspace(-2.5, 1.5, 20)';  % mass-to-charge setpoints
+z = 0:100;  idx = 3;
 
 prop = prop_pma;
 prop = massmob.add(prop, 'soot')
 d = (m .* 1e-18 ./ prop.m0) .^ (1 / prop.Dm);  % get mobility diameters
 
 sp = get_setpoint(prop, 'm_star', m_star .* 1e-18, 'Rm', 3);
-Af = tfer_pma(sp, m, d, 0:100, prop, '1C_diff');  % unipolar/Fuchs
+Af = tfer_pma(sp, m, d, z, prop, '1C_diff');  % unipolar/Fuchs
 
 %-{
 f2 = figure(2);
 cmap_sweep(length(m_star), cm);
-semilogx(m, Af(:,:,2));
+semilogx(m, Af(:,:,idx));
 xlim([m(1), m(end)]); xlabel('m_p [fg]');
 f2.Position(2) = 600;
 f2.Position(3) = 1000;
 title('PMA');
 %}
 
+% Triangular version of the transfer function.
+Aft = tfer_tri(sp, m .* 1e-18, prop.zet, z);
+
+%-{
+hold on;
+semilogx(m, Aft(:,:,idx), '--');
+hold off;
+%}
 
 %%
 %== CHARGING =============================================================%
