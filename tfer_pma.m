@@ -3,7 +3,7 @@
 %
 %  AUTHOR: Timothy Sipkens, 2024-01-05
 
-function [Lambda_ii, prop, f_z, qbar] = tfer_pma(sp, m, d, z, prop, opt)
+function [Lambda_ii, prop] = tfer_pma(sp, m, d, z, prop, opt)
 
 % Add mat-tfer-pma package to MATLAB path.
 fd = fileparts(mfilename('fullpath'));
