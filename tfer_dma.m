@@ -30,7 +30,10 @@ function [Omega, Zp_tilde] = tfer_dma(d_star, d, z, prop, opts)
 
 
 %-- Parse inputs ---------------------------------------------------------%
-addpath tfer-pma;  % add mat-tfer-pma package to MATLAB path
+% Add mat-tfer-pma package to MATLAB path.
+% Used for size conversions calculations.
+fd = fileparts(mfilename('fullpath'));
+addpath([fd, filesep, 'tfer-pma']);
 
 if ~exist('opts','var'); opts = []; end % initialize options struct
 if ~exist('prop','var'); prop = []; end
