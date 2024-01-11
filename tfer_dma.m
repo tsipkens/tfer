@@ -51,7 +51,11 @@ d = d .* 1e-9;
 Omega = zeros(length(d_star), length(d), length(z));
 Zp_tilde = zeros(length(d), length(d_star), length(z));
 for ii=1:length(z)
-    [Omega(:,:,ii), Zp_tilde(:,:,ii)] = tfer_dma0(d_star, d, z(ii), prop, opts);
+    if z(ii) == 0  % then hard code that no particles transmit
+        Omega(:,:,ii) = zeros(length(d_star), length(d));
+    else
+        [Omega(:,:,ii), Zp_tilde(:,:,ii)] = tfer_dma0(d_star, d, z(ii), prop, opts);
+    end
 end
 
 

@@ -21,6 +21,7 @@ prop = prop_dma()  % default DMA properties
 Adma = tfer_dma(d_star', d, z, prop);
 
 % Triangular version of the transfer function.
+% Only for singly charged.
 Admat = tfer_tri(d_star', d, prop.Rd);
 
 %-{
