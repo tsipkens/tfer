@@ -178,18 +178,18 @@ title('Impactor');
 
 %%
 %== AAC ==================================================================%
-da = logspace(0.5, 3.5, 700)';  % reconstruction vector
+da = logspace(0.8, 3.2, 700)';  % reconstruction vector
 da_star = logspace(1, 3, 20);
-prop = prop_aac();
+prop = prop_aac()
 
 Aa = tfer_aac(da_star .* 1e-9, da .* 1e-9, prop);
 
 % Scanning version.
 opts = struct();
 opts.scan = 1;
-prop.tsc = 4;
-prop.omega_s = 1500;
-prop.omega_e = 50;
+prop.tsc = 300;
+prop.omega_s = 4e3;
+prop.omega_e = 10;
 Aas = tfer_aac(da_star .* 1e-9, da .* 1e-9, prop, opts);  % uses default elpi properties
 
 %-{
