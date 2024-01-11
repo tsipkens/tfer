@@ -30,7 +30,7 @@ function [Omega, Zp_tilde] = tfer_dma(d_star, d, z, prop, opts)
 
 
 %-- Parse inputs ---------------------------------------------------------%
-addpath autils;  % add mat-tfer-pma package to MATLAB path
+addpath tfer-pma;  % add mat-tfer-pma package to MATLAB path
 
 if ~exist('opts','var'); opts = []; end % initialize options struct
 if ~exist('prop','var'); prop = []; end
