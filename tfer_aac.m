@@ -4,25 +4,30 @@
 %  See also Johnson et al., Aerosol Sci. Technol (2021) and 
 %  Tavakoli and Olfert (2013). 
 %  
-%  OMEGA = tfer_aac(D_STAR, D, PROP) computes the AAC transfer function at 
-%  aerodynamic diameters D for a specified da septoint, D_STAR, and 
-%  AAC properties, PROP. 
+%  LAMBDA = tfer_aac(D_STAR, D, PROP) computes the AAC transfer function at 
+%  aerodynamic diameters D [nm] for a specified da septoint, D_STAR [nm],  
+%  and AAC properties, PROP. 
 %  
-%  OMEGA = tfer_aac(OMEGA, D, PROP, OPTS) instead uses an angular speed
-%  as the input to constrain the setpoint, requiring that 
+%  LAMBDA = tfer_aac(OMEGA, D, PROP, OPTS) instead uses an angular speed,
+%  OMEGA, as the input to constrain the setpoint, requiring that 
 %  OPTS.type = 'omega'.
 %  
 %  ------------------------------------------------------------------------
 %  
 %  AUTHOR: Timothy Sipkens, 2024-01-10
 
-function [Omega, d_star] = tfer_aac(d_star, d, prop, opts, varargin)
+function [Lambda, da_star] = tfer_aac(da_star, da, prop, opts, varargin)
 
-% Parse inputs.
+%-- Parse inputs ---------------------------------------------------------%
 if ~exist('opts', 'var'); opts = []; end
 if isempty(opts); opts = struct(); end
 if ~isfield(opts, 'type'); opts.type = 'd_star'; end  % by default, assume input is d_star
 if ~isfield(opts, 'scan'); opts.scan = 0; end  % by default, use steady state (not scanning)
+
+% Convert from nm to m for calculations.
+% Conversion of da_star is below, depending on opts structure. 
+da = da.* 1e-9;
+%-------------------------------------------------------------------------%
 
 % Get some basic quanities. 
 mu = 1.82e-5;  % gas viscosity [Pa*s]
@@ -34,21 +39,22 @@ gam = (prop.Qa + prop.Qsh - prop.Qs .* (1 - rc .^ 2)) ./ ...
 
 % Interpret setpoint.
 if strcmp(opts.type, 'd_star')  % d_star given, so compute omega
-    tau_star = Cc(d_star) .* 1e3 .* d_star.^2 ./ (18 .* mu);
+    da_star = da_star .* 1e-9;  % convert input from nm to m
+    tau_star = Cc(da_star) .* 1e3 .* da_star.^2 ./ (18 .* mu);
     omega = sqrt((prop.Qsh + prop.Qexh) ./ ...
         (pi .* (prop.r2 + prop.r1).^2 .* prop.L .* tau_star));
 
 elseif strcmp(opts.type, 'omega')  % omega given, so compute d_star
-    omega = d_star;
+    omega = da_star;
     tau_star = (prop.Qsh + prop.Qexh) ./ ...
         (pi .* (prop.r2 + prop.r1).^2 .* prop.L .* omega.^2);
-    d_star = cacl_d_star(tau_star, mu);
+    da_star = cacl_d_star(tau_star, mu);
 
 end
 
 
 %-- Continue with transfer function calculation. -------------------------%
-tau = Cc(d) .* 1e3 .* d.^2 ./ (18 .* mu);
+tau = Cc(da) .* 1e3 .* da.^2 ./ (18 .* mu);
 
 if ~opts.scan % steady state
     K = omega .^ 2 .* tf;  % for stepping
@@ -66,7 +72,7 @@ else  % scanning
     c_tau_star = 1 ./ (2 .* c_sc) .* (log(1./rc) + 1/2 .* log(gam));
     
     if strcmp(opts.type, 'time')  % OPTION 1: time to d_star
-        tm = varargin{1};  % classifier exit time
+        tm = d_star;  % classifier exit time
         tau_star = c_tau_star .* exp(-tm ./ tau_sc);
         cacl_d_star(tau_star, mu);
         
@@ -98,7 +104,7 @@ f2 = (prop.Qa + prop.Qsh) ./ prop.Qa .* ...
 
 f3 = prop.Qs ./ prop.Qa .* ones(size(f1));
 
-Omega = max(zeros(size(f1)), min(min(min(f1, f2), f3), ones(size(f1))))';
+Lambda = max(zeros(size(f1)), min(min(min(f1, f2), f3), ones(size(f1))))';
 
 end
 

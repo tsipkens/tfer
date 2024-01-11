@@ -3,7 +3,7 @@ clear;
 close all;
 clc;
 
-% addpath autils;
+addpath autils;
 
 % Will not work without cmap folder locally.
 addpath cmap;
@@ -16,9 +16,9 @@ d = logspace(log10(10), log10(800), 500)';  % reconstruction points
 d_star = logspace(log10(13.1), log10(600), 20)';  % mobility setpoints
 z = 0:4;
 
-prop = prop_dma  % default DMA properties
+prop = prop_dma()  % default DMA properties
 
-Adma = tfer_dma(d_star' .* 1e-9, d .* 1e-9, z, prop);
+Adma = tfer_dma(d_star', d, z, prop);
 
 % Triangular version of the transfer function.
 Admat = tfer_tri(d_star', d, prop.Rd);
@@ -190,7 +190,7 @@ opts.scan = 1;
 prop.tsc = 300;
 prop.omega_s = 4e3;
 prop.omega_e = 10;
-Aas = tfer_aac(da_star .* 1e-9, da .* 1e-9, prop, opts);  % uses default elpi properties
+Aas = tfer_aac(da_star, da, prop, opts);  % uses default elpi properties
 
 %-{
 f6 = figure(6);
