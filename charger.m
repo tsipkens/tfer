@@ -4,7 +4,7 @@
 %  laboratory at the University of Alberta.
 % 
 %  INPUTS:
-%   d      Particle diameter [m]
+%   d      Particle diameter [nm]
 %   z      Integer particle charge state (optional, default = 0:6)
 %   T      Temperature [K] (optional, default = 298 K)
 %   model  String that specifies which model to use (optional, default = 'hybrid')
@@ -41,6 +41,8 @@ end
 
 if ~exist('opt', 'var'); opt = []; end
 if isempty(opt); opt = struct(); end
+
+d = d .* 1e-9;  % convert from nm to m for calculations
 %-------------------------------------------------------------------------%
 
 
