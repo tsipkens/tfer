@@ -1,4 +1,0 @@
-[submodule "tfer-pma"]
-	path = tfer-pma
-	url = https://github.com/tsipkens/mat-tfer-pma
-	branch = master
