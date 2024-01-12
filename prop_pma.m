@@ -20,13 +20,13 @@ prop = load_spec(spec);
 
 % --If Dm not set, assign one now ----------------------------------------%
 if ~isfield(prop, 'Dm')
-    % Default is soot. 
-    prop.rho0 = 0.0612;
-    prop.Dm = 2.48;
+    % Soot.
+    % prop.rho0 = 0.0612;
+    % prop.Dm = 2.48;
     
     % Water spheres. 
-    % prop.rho0 = pi*1000/6; % ~524;
-    % prop.Dm = 3;
+    prop.rho0 = pi*1000/6; % ~524;
+    prop.Dm = 3;
 end
 
 
