@@ -11,9 +11,9 @@
 
 function [prop] = prop_pma(spec)
 
-if ~exist('spec','var'); spec = []; end
+if ~exist('spec', 'var'); spec = []; end
 if isempty(spec); spec = 'cpma'; end
-if strcmp(spec,'olfert'); spec = 'cpma'; end  % for backward compatibility
+if strcmp(spec, 'olfert'); spec = 'cpma'; end  % for backward compatibility
 
 % Load from config file.
 prop = load_spec(spec);
@@ -47,8 +47,8 @@ prop.D = @(B) kB.*prop.T.*B; % diffusion coefficient
 % Fill mass-mobility relation equivalents.
 % First, add mat-tfer-pma package to MATLAB path.
 fd = fileparts(mfilename('fullpath'));
-addpath([fd, filesep, 'tfer-pma']);
-prop = prop_massmob(prop);  % mass-mobility relationship
+addpath([fd, filesep, 'autils']);
+prop = massmob.init(prop);  % mass-mobility relationship
 
 end
 
