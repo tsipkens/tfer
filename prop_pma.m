@@ -45,9 +45,8 @@ prop.D = @(B) kB.*prop.T.*B; % diffusion coefficient
 
 
 % Fill mass-mobility relation equivalents.
-% First, add mat-tfer-pma package to MATLAB path.
-fd = fileparts(mfilename('fullpath'));
-addpath([fd, filesep, 'autils']);
+% First, add autils package, which should be a folder in upper directory. 
+addpath('autils');
 prop = massmob.init(prop);  % mass-mobility relationship
 
 end
