@@ -39,7 +39,7 @@ if ~exist('opts','var'); opts = []; end % initialize options struct
 if ~exist('prop','var'); prop = []; end
 
 if ~isfield(opts,'solver'); opts.solver = 'fullydeveloped'; end
-if ~isfield(opts,'diffu'); opts.diffusion = 1; end
+if ~isfield(opts,'diffusion'); opts.diffusion = 1; end
 if isempty(prop); prop = prop_dma(opts); end
 
 % Convert from nm to m for calculations.
@@ -116,7 +116,7 @@ if opts.diffusion
         epsilon((Zp_tilde - 1 - prop.bet*prop.del)./(2^0.5*sigma))-...
         epsilon((Zp_tilde - 1 + prop.bet*prop.del)./(2^0.5*sigma)));
     
-else % simpler evaluation for the case of exluding diffusion
+else  % simpler evaluation for the case of exluding diffusion
     Omega = 1 / (2*prop.bet*(1-prop.del)).*(abs(Zp_tilde - 1 + prop.bet)+...
         abs(Zp_tilde - 1 - prop.bet) - ...
         abs(Zp_tilde - 1 + prop.bet * prop.del) - ...
