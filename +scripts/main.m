@@ -17,10 +17,10 @@ d_star = logspace(log10(7), log10(800), 5);  % mobility setpoints
 z = 0:3;
 
 prop = prop_dma()  % default DMA properties
-% prop.Q_a = prop.Q_a .* ones(size(d_star));  prop.Q_a(end-2:end) = 2.5e-5;  % test variable flow rate
-% prop.Q_c = prop.Q_c .* ones(size(d_star));  prop.Q_c(end-2:end) = 2.5e-4;
-% prop.Q_s = prop.Q_a;
-% prop.Q_m = prop.Q_c
+% prop.Qa = prop.Qa .* ones(size(d_star));  prop.Qa(end-2:end) = 2.5e-5;  % test variable flow rate
+% prop.Qc = prop.Qc .* ones(size(d_star));  prop.Qc(end-2:end) = 2.5e-4;
+% prop.Qs = prop.Qa;
+% prop.Qm = prop.Qc
 
 [Adma, ~, prop] = tfer_dma(d_star, d, z, prop);
 
