@@ -44,11 +44,11 @@ end
 
 %-- Evaluate output parameters -------------------------------------------%
 tau = B .* m;
-D = prop.D(B) .* z; % diffusion as a function of mechanical mobiltiy and charge state
-C0 = [sp.V]' .* q ./ log(1/prop.r_hat); % calcualte recurring C0 parameter
+D = prop.D(B);  % diffusion as a function of mechanical mobiltiy
+C0 = [sp.V]' .* q ./ log(1/prop.r_hat);  % calcualte recurring C0 parameter
 
 if nargout>=4 % if required, calculate equilbirium radius
-% Note: Whether to pick the +ive of -ive root for rs is chosen based on a
+% NOTE: Whether to pick the +ive of -ive root for rs is chosen based on a
 % heuristic approach. Specifically, the root closer to the centerline is
 % chosen, except when the -ive root is zero (which is the case for APM 
 % conditions, where the +ive root should always be used).
