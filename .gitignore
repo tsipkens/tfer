@@ -3,6 +3,7 @@
 cmap/
 archive/
 config_local/
++working/
 
 # Matlab ignore
 *.asv

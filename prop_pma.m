@@ -41,7 +41,7 @@ prop.v_bar = prop.Q/prop.A; % average flow velocity
 
 %-- For diffusion --------------------------------------------------------%
 kB = 1.3806488e-23; % Boltzmann's constant
-prop.D = @(B) kB.*prop.T.*B; % diffusion coefficient
+prop.D = @(B) kB .* prop.T .* B; % diffusion coefficient
 
 
 % Fill mass-mobility relation equivalents.

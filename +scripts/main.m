@@ -183,14 +183,22 @@ title('Impactor');
 
 %%
 %== AAC ==================================================================%
-da = logspace(0.8, 3.2, 700)';  % reconstruction vector
-da_star = logspace(1, 3, 20);
-prop = prop_aac()
+da = logspace(0.8, 3.2, 1.5e3)';  % reconstruction vector
+da_star = logspace(1, 3, 10);
+prop = prop_aac();
+prop = massmob.add(prop, 'soot')
 
-Aa = tfer_aac(da_star .* 1e-9, da .* 1e-9, prop);
+% Limited trajectrory variant.
+opts = struct();  opts.model = 'lt';
+Aa = tfer_aac(da_star, da, prop, opts);
 
-% Scanning version.
+% Particle streamline.
+opts = struct();  opts.diffusion = false;
+Aa2 = tfer_aac(da_star, da, prop, opts);
+
+% Scanning version (limited trajectory only).
 opts = struct();
+opts.model = 'lt';
 opts.scan = 1;
 prop.tsc = 300;
 prop.omega_s = 4e3;
@@ -199,10 +207,11 @@ Aas = tfer_aac(da_star, da, prop, opts);  % uses default elpi properties
 
 %-{
 f6 = figure(6);
-cmap_sweep(size(Aa, 1), cm);
+cmap_sweep(length(da_star), cm);
 semilogx(da, Aa);
 hold on;
-semilogx(da, Aas, 'k--');
+semilogx(da, Aa2, 'k--');  % particle streamline
+semilogx(da, Aas, 'k:');
 hold off;
 xlim([da(1), da(end)]); xlabel('d_a [nm]');
 f6.Position(2) = 400;
