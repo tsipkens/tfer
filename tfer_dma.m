@@ -61,8 +61,8 @@ d = d .* 1e-9;
 
 
 %-- Compute additional classifier properties -----------------------------%
-prop.bet = (prop.Q_s + prop.Q_a) ./ (prop.Q_c + prop.Q_m);
-prop.del = (prop.Q_s - prop.Q_a) ./ (prop.Q_s + prop.Q_a);
+prop.bet = (prop.Qs + prop.Qa) ./ (prop.Qc + prop.Qm);
+prop.del = (prop.Qs - prop.Qa) ./ (prop.Qs + prop.Qa);
 
 % Check if bet and del change. If not, reduce to scalar for calcs. (faster).
 if and(all(prop.bet == prop.bet(1)), all(prop.del == prop.del(1)))
@@ -85,7 +85,7 @@ else
 end
 
 % Classifier voltage (TSI DMA 3080 Manual Equation B-5).
-V = (prop.Q_c ./ ((2*pi) .* Zp_star .* prop.L)) .* log(prop.R2 ./ prop.R1);
+V = (prop.Qc ./ ((2*pi) .* Zp_star .* prop.L)) .* log(prop.R2 ./ prop.R1);
 
 
 %-- Calculate G_DMA ------------------------------------------------------%
@@ -182,7 +182,7 @@ if opts.diffusion
     switch opts.solver
         case 'buckley'  % evaluation from Buckley et al.
             D = prop.D(B) .* z;  % diffusion
-            sigma = sqrt(prop.G_DMA .* (2*pi) .* prop.L .* D ./ prop.Q_c);
+            sigma = sqrt(prop.G_DMA .* (2*pi) .* prop.L .* D ./ prop.Qc);
             
         case 'plug'  % plug flow, Stolzenburg, 2018
             sigma_star = sqrt(((kb*prop.T) / (z*e*V)) * prop.G_DMA); % Stolzenburg Manuscript Equation 20

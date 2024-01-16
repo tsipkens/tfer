@@ -69,22 +69,22 @@ end
 %-- Assign flow rates ----------------------------------------------------%
 switch prop.flow
     case 'low'
-        prop.Q_s = 0.3/60/1000; % Sample flow [m^3/s]
-        prop.Q_a = 0.3/60/1000; % Aerosol flow [m^3/s]
-        prop.Q_c = 3/60/1000; % Sheath flow [m^3/s]
-        prop.Q_m = 3/60/1000; % Exhaust flow [m^3/s]
+        prop.Qs = 0.3/60/1000; % Sample flow [m^3/s]
+        prop.Qa = 0.3/60/1000; % Aerosol flow [m^3/s]
+        prop.Qc = 3/60/1000; % Sheath flow [m^3/s]
+        prop.Qm = 3/60/1000; % Exhaust flow [m^3/s]
 
     case 'high'
-        prop.Q_s = 1.5/60/1000;
-        prop.Q_a = 1.5/60/1000;
-        prop.Q_c = 15/60/1000;
-        prop.Q_m = 15/60/1000;
+        prop.Qs = 1.5/60/1000;
+        prop.Qa = 1.5/60/1000;
+        prop.Qc = 15/60/1000;
+        prop.Qm = 15/60/1000;
 
     case 'buckley'
-        prop.Q_c = 4.89E-3/60; % sheath flow [m^3/s]
-        prop.Q_a = 1.02E-3/60; % aerosol flow [m^3/s]
-        prop.Q_s = Q_a; % sample flow [m^3/s]
-        prop.Q_m = Q_c; % exhaust flow [m^3/s]
+        prop.Qc = 4.89E-3/60; % sheath flow [m^3/s]
+        prop.Qa = 1.02E-3/60; % aerosol flow [m^3/s]
+        prop.Qs = Q_a; % sample flow [m^3/s]
+        prop.Qm = Q_c; % exhaust flow [m^3/s]
 end
 
 
