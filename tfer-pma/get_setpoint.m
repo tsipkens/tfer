@@ -191,13 +191,13 @@ end
 
 %-- Calculate resolution -------------------------------------------------%
 if isempty(sp.Rm) % if resolution is not specified
-    [sp.Rm,sp.m_max] = get_resolution(sp.m_star,sp.omega,prop);
+    [sp.Rm,sp.m_max] = get_resolution(sp.m_star, sp.omega,prop);
         % evaluate resolution in corresponding subfunction
         % involves a minimization routine
 end
 
 
-m_star = sp.m_star; % output m_star independently
+m_star = [sp.m_star]; % output m_star independently
 
 end
 

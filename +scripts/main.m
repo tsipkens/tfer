@@ -44,8 +44,8 @@ title('DMA');
 %%
 %== PMA ==================================================================%
 %   Currently assumes a one-to-one map m > dm. 
-m = logspace(-3, 2.5, 500)';  % reconstruction points
-m_star = logspace(-2.5, 1.5, 5)';  % mass-to-charge setpoints
+m = logspace(-3, 3, 2e3)';  % reconstruction points
+m_star = logspace(-2.5, 2, 5)';  % mass-to-charge setpoints
 z = 0:4;
 
 prop = prop_pma;
