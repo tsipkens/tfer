@@ -1,7 +1,7 @@
 
 % TFER_DMA  Evaluates the transfer function of a differential mobility analyzer.
 % 
-%  OMEGA = kernel.tfer_dma(D_STAR,D,Z) uses the mobility diameter set points
+%  OMEGA = kernel.tfer_dma(D_STAR, D, Z) uses the mobility diameter set points
 %  specified by D_STAR [nm] and evalautes the DMA transfer function at D
 %  [nm] for an integer charge state of Z (a scalar, integer). Uses default
 %  properties specified by kernel.prop_dma. Explicitly stating prop_dma is
@@ -10,7 +10,7 @@
 %  NOTE: D should be n2 x 1. D_STAR should be 1 x n1. If any entries of
 %  prop are vectors,they should have the same dimensions as D_STAR.
 %  
-%  OMEGA = kernel.tfer_dma(D_STAR,D,Z,PROP_DMA) explicitly specified the
+%  OMEGA = kernel.tfer_dma(D_STAR, D, Z, PROP_DMA) explicitly specified the
 %  properties of the DMA (e.g., the radii) as a data structure. This is the
 %  preferred usage to the previous call. For structure of PROP_DMA, see
 %  kernel.prop_dma(...). 
@@ -21,42 +21,41 @@
 %       .solver     Indicates the method by which diffusion is calculated (optional)
 %       .param      String indicated which parameter set to use (see prop_DMA.m)
 %  
-%  [OMEGA,ZP_TILDE] = kernel.tfer_dma(...) adds an output containing the
+%  [OMEGA, ZP_TILDE] = kernel.tfer_dma(...) adds an output containing the
 %  non-dimensional electrical mobility as a vector.
 %  
-%  [OMEGA,ZP_TILDE,PROP] = kernel.tfer_dma(...) adds output for updated
+%  [OMEGA, ZP_TILDE, PROP] = kernel.tfer_dma(...) adds output for updated
 %  property struct, containing transfer function specific information
 %  (e.g., DMA resolution). 
 %  
-%  [...,V] = kernel.tfer_dma(...) adds outputs containing setpoint
-%  information in the form of a voltage, V.
+%  [..., SP] = kernel.tfer_dma(...) adds an output containing setpoint
+%  information. 
 %  
 %  ------------------------------------------------------------------------
 % 
 %  AUTHOR: Timothy Sipkens, 2018-12-27
 %  Some code adapted from Buckley et al. (2017) and Olfert group.
 
-function [Omega, Zp_tilde, prop, V] = tfer_dma(d_star, d, z, prop, opts)
+function [Omega, Zp_tilde, prop, sp] = tfer_dma(d_star, d, z, prop, opts)
 
 
 %-- Parse inputs ---------------------------------------------------------%
 % Add mat-tfer-pma package to MATLAB path.
 % Used for size conversions calculations.
 fd = fileparts(mfilename('fullpath'));
-addpath([fd, filesep, 'tfer-pma']);
+addpath([fd, filesep, 'autils']);
 
 % Set defaults, if opts not given.
 if ~exist('opts', 'var'); opts = struct(); end  % initialize options struct
 if ~isfield(opts, 'solver'); opts.solver = 'fullydeveloped'; end
 if ~isfield(opts, 'diffusion'); opts.diffusion = 1; end
+if ~isfield(opts, 'type'); opts.type = 'd_star'; end
 
 % Get prop, if prop not given. Use opts struct to build.
 if ~exist('prop', 'var'); prop = []; end
 if isempty(prop); prop = prop_dma(opts); end
 
-% Convert from nm to m for calculations.
-d_star = d_star .* 1e-9;
-d = d .* 1e-9;
+d = d .* 1e-9;  % convert from nm to m for calculations
 %-------------------------------------------------------------------------%
 
 
@@ -77,15 +76,44 @@ kap = prop.L ./ prop.R2;  % Stolzenburg Manuscript, Eq. 9
 % kap = prop.L .* prop.R2 ./ (prop.R2.^2 - prop.R1.^2);  % Buckley et al.
 
 
-%-- Evaluate particle mobility -------------------------------------------%
-if strcmp(opts.solver, 'buckley')
-    [~, Zp_star] = dm2zp(d_star);  % evaluate electrical mobility (Davies)
-else
-    [~, Zp_star] = dm2zp(d_star, 1, prop.T, prop.p);  % evaluate electrical mobility (Kim et al.)
+%-- Parse setpoint input -------------------------------------------------%
+switch opts.type
+    case 'd_star'  % default
+        d_star = d_star .* 1e-9;  % convert from nm to m for calculations
+
+        %-- Evaluate particle mobility -----------------------------------%
+        if strcmp(opts.solver, 'buckley')
+            [~, Zp_star] = dm2zp(d_star, 1);  % evaluate electrical mobility (Davies)
+        else
+            [~, Zp_star] = dm2zp(d_star, 1, prop.T, prop.p);  % evaluate electrical mobility (Kim et al.)
+        end
+        
+        % Classifier voltage (TSI DMA 3080 Manual Equation B-5).
+        V = (prop.Qc ./ ((2*pi) .* Zp_star .* prop.L)) .* ...
+            log(prop.R2 ./ prop.R1);
+
+    case 'V'
+        V = d_star;  % input is actually voltage, copy over
+
+        % Classifier voltage to mobility.
+        Zp_star = (prop.Qc ./ ((2*pi) .* V .* prop.L)) .* ...
+            log(prop.R2 ./ prop.R1);
+        
+        %-- Evaluate particle mobility -----------------------------------%
+        if strcmp(opts.solver, 'buckley')
+            d_star = zp2dm(Zp_star, 1);  % evaluate electrical mobility (Davies)
+        else
+            d_star = zp2dm(Zp_star, 1, prop.T, prop.p);  % evaluate electrical mobility (Kim et al.)
+        end
 end
 
-% Classifier voltage (TSI DMA 3080 Manual Equation B-5).
-V = (prop.Qc ./ ((2*pi) .* Zp_star .* prop.L)) .* log(prop.R2 ./ prop.R1);
+% Generate setpoint structure (for output).
+sp(length(d_star)) = struct();
+for ii=1:length(d_star)
+    sp(ii).d_star = d_star(ii);
+    sp(ii).Zp_star = Zp_star(ii);
+    sp(ii).V = V(ii);
+end
 
 
 %-- Calculate G_DMA ------------------------------------------------------%
