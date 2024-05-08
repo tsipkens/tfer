@@ -166,12 +166,13 @@ switch opts.model
             % Incorporate deposition parameter.
             del_dep = (prop.L_eff .* D) ./ prop.Qa;
             fl = del_dep >= 0.007;
+            
+            lambda_d = zeros(size(del_dep));
             lambda_d(fl) = 0.891 .* exp(-11.5.*del_dep(fl)) + ...
                 0.0975 .* exp(-70.1.*del_dep(fl)) + ...
                 0.0325 .* exp(-179.*del_dep(fl));
             lambda_d(~fl) = 1 - 5.50 .* (del_dep(~fl).^(2/3)) + ...
                 3.77 .* del_dep(~fl) + 0.814 .* (del_dep(~fl).^(4/3));
-            lambda_d = lambda_d';
             
             lambda_tf = prop.lambda_e .* lambda_d;  % total transmission efficiency
 
